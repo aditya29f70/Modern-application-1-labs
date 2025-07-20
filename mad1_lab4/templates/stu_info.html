@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+  </head>
+  <body>
+    <h1 style="text-align: center">Student Details</h1>
+    <table id="personal-details">
+      <tr>
+        <th>Roll Number</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+      </tr>
+      <tr>
+        <td>{{roll}}</td>
+        <td>{{f_name}}</td>
+        <td>{{l_name}}</td>
+      </tr>
+    </table>
+    <h1 style="text-align: center">Enrollment list</h1>
+    <br />
+    <table id="enroll-table">
+      <tr>
+        <th>S. No.</th>
+        <th>Course Code</th>
+        <th>Course Name</th>
+        <th>Course Description</th>
+      </tr>
+      {% set count=1 %} {% for c_id in cour_info %}
+      <tr>
+        <td>{{count}}</td>
+        <td>{{cour_info[c_id][0]}}</td>
+        <td>{{cour_info[c_id][1]}}</td>
+        <td>{{cour_info[c_id][2]}}</td>
+      </tr>
+      {% set count= count+1 %} {% endfor %}
+    </table>
+    <a href="/" style="padding: 125px">Go Back</a>
+  </body>
+</html>

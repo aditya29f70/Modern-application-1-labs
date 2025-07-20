@@ -1,0 +1,192 @@
+# today's session, is going to be based on ORM, we will understand
+# how we can use flask and connect it with the database 
+# and see how data can be added to it  
+# what is backend --> is something that recite that is called
+# a server code
+# the business logic of that application write on a paritcular machine
+# so what ever that business logic 
+# let make first a basic flask object note for that we are gonna use Flask obj where we ues
+# that __name__(dunder argument) it refers to your module
+
+# what debug=True does, we don't need to restart the server after making any change it
+# wil be atomatically rerun when we make any changes the server and take what ever changes you have made
+# and also show the errors on the browsor 
+
+# where are the funcationality are written is called backend
+
+# "/" -- base url and the complete which you triggering  is -- httm://127.0.0.1:5000
+# if the client triggering a url mean he want to get the ouput from that fn associtated with that url
+
+# writing the query in python code(objects and classes) --- converted into sql lang(configurations, ORM) -- and use it to manipulate the db (db structured, sql , relations)
+# and retreving process also done as same from db
+#✅ What is SQLAlchemy?
+#SQLAlchemy is a Python SQL toolkit and Object-Relational Mapper (ORM) that helps developers interact with databases using Python code instead of writing raw SQL queries.
+
+# now let go to connecting this application to the db 
+# 1. we will be using sql-lite for the db(creating sql-lite db , creating table in it and adding records in it)
+# 2. when i want to connect with the db with the help of flask there is way to do it
+# and that connection bw db and the flask application is what is called as (ORM)--> object relational mapper
+# so the '''sql Achemy''' is our ORM
+
+
+# so for that i will try to code in python and i want python-code to get converted
+#  into sql query language and by this change my table accordingly
+
+
+# so finally we are writting our code in python by using 'classes' , objects and attributes
+# so these go to make a particular thing eg
+# 1. class <--> table
+# 2. attributes <--> column
+# 3. object <---> records (row)  
+
+
+
+# from flask import Flask , render_template
+
+# app= Flask(__name__)
+
+
+# @app.route("/")
+# def my_fn():
+#   return render_template("index.html")
+
+# @app.route("/hello")
+# def my_fn_2():
+#   return ("hello users hi")
+
+# app.run(debug=True)
+
+from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Nullable 
+
+app= Flask(__name__) # here we have made a flask obj
+
+# some configuration statement before the db you will be creating
+app.config["SQLALCHEMY_DATABASE_URI"]= 'sqlite:///mydatab.sqlite3'
+# this whole thing means--> the db that you want to create using fasksqlalchemy will be created somewhere in your proj folder and the name of the db will be "mydatab.sqllite3"
+# so when i will be running this app.py this folder atomatically will be made
+# mydatab is a name that i want to create, and since we are going to use sqllite3 the extension of this db would be ".sqllite3" 
+# so this a dict and every time you will create a new key for this 
+# this is a interanl dict that app obj by itself creates app.config 
+# remember this is only the configuration but if i have to create then there is other command that we have to use so then this db will be created
+
+
+# now lly we make a db obj
+db= SQLAlchemy(app) # and give that app info by giving that app as argument for only the connection
+# so db creatiion done by this
+
+# now we are working with db and backend so we can to the outputs so for the we are going to use python cell
+# bz i have to run this application line by line
+# so first import all this thing from app by ' from app import * ' or you can specificaly import any particular thing also
+# when you do that will create a new folder called ' instance '
+
+# now gonna make db by giving this command on python cell: db.create_all()
+# but you will see an error bz once the config are done (app is created, db is created) you 
+# just need to say that we using db with help of python (backend not browsor asking here that why)
+
+app.app_context().push()
+
+# now mydatab.sqlite3 db has been created ,now we want to table in it 'user' and 'role'
+# let us create this table user --> so if i want to create table in python -- use 'class'
+# after that we will be creating attributes by using some methods like db.Column, df.Integer, primary_key
+# so where this methods are defined so it means this class called this methods through there any parent class
+# means this class is inheritance of any other class --- that is ''''db.Model'''
+
+class User(db.Model):
+  id= db.Column(db.Integer, primary_key=True)
+  username=  db.Column(db.String(20) , nullable=False, unique=True)
+  password=  db.Column(db.String() , nullable=False)
+
+# you have made some changes so you have to delete that previus db and regeneate that new db
+
+# now understand how to add data in it, now for creating a record for this table we
+# need object of this class
+
+# so you can direct make the User recond don't need to restart the cell
+# so for records we are not going to use app.py all the thing will be done on app.py
+
+# any attri which is primary key is '''autoincrement''' no need to special there value , values will be starting from 1
+# firstly the obj only created in the python after making in the cell , for it goes in the db
+# we have to write two more statements 1. db.session.add(user_1, user_2.....)
+# it will add these all users in the db
+# 2. we have decide that these are the changes that i want to do to my
+# db --> db.session.commit()
+# note session yu can thing it as a 'vessel' or 'container' which contains all the values which you want to put it in the db
+
+# now liten if you exit from that cell , now that user_1 does not exist anymore (bz it made in the cell)
+# when ever you close the shell every data also doesn't exist which gave in the shell
+
+# what it still stays in my db bz my db is 'persistent
+# now if i want to update these value how i can get back the same value
+# so if you want to update a record which already exsist in the db
+# so for that nw we have to retrive the data from db to shell or python and then can update it
+# so what should come from db to python object? note it was a row in the row ---> i get '''object'''' aganin
+# so all over obj is moving; so now the question is how to retrive it from db to python
+
+# so 1. open python shell lly do that import part (from app import *)
+# 2. in sql what you do for retriving --> select --> what we are going to do here
+# so in this time we are not gonna create obj , we retrive it ---> user_1= User.query.get(2)
+# note: in help of primary key i can simply use get method by providing primary key
+
+# so what ever comes in my user_1 , if you want to see just use the ther name in the shell it will give you the datatype + primary key
+# <class_name primary_key>
+# so if it is obj so we can also retrive all the attributes now
+
+# now editing this obj will actually edit that real row
+# note we can't change primary key bz it is auto added and also primary key
+# after that we only need to commit , don't add bz it will make another row here need only update
+# so do only 'db.session.commit()'
+
+
+# now there is problems that let there is 100s of rows you don't know what is the primary key
+# then you can retrive a row, so we can also retrive a row with the help of others attribute
+# like here we can retrive a row with the help of username also  by using 'filter_by' istead of 'get' and the that attribute name as argument of that
+# --> let you take another obj name user_2 
+# user_2= db.query.filter_by(username="Aditya Kuamr") 
+# but there is something which we have to add bz ther is chances that there are multiple row with same username
+# so for that we have to specify that we want only one value or list of value
+# if i want first one which satisfy this condition then add '.first()'
+
+
+# what if there is multiple same usernames and i want all those valeus
+# now retrivint it in a diff way 
+# --> user_3= User.query.filter_by(username="Aditya Kumar").all()
+# now see the diff that what has retrived
+# --> it is giving you list of object which have same username
+
+# so then you have to diff obj by indexing like user_1[0]--> first obj
+
+
+
+# can you retrive a particular user from the db this retrival is called --> read
+# can you create a new entry into the db this creation is called --> create
+# can you update an existing entry this is called as updated
+# lly you can do delete 
+# ---> these four operation is called --> CRUD operation
+
+
+# now for the delete you need to know or you need to retrive that very entry that you want to
+# delete, let if i want to delete second row
+# what i do --> first retrive that obj 
+# let first we retrive a row in the basis of password then delete
+# the instead of add just delete it
+# --> db.session.delete(user_1)
+# --> and then make sure this things will be happend you need to do
+# --> db.session.commit()
+
+## ##### alway when ever you going to change the reocord you have to commit
+# then after this changes will be showing in the db
+
+##################### hw create another table roles, --> id, role_name
+# remember since you are adding new class you are changing the way database works
+# so you have to delete and recreated it
+
+# next session we are gonna start relationships --> there we connnects users and roles with each others
+# two way of doing it 1. one to many 
+# 2. many to many
+
+
+# some imp pt 'backend validation' ; username= request.form.get("username") or null
+
+#################pt if the class name is Role then ==== the table name would we ==== role

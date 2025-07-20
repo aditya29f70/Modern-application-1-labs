@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Home</title>
+  </head>
+  <body>
+    <h1>Students list</h1>
+    {% if not dic %}
+    <p>
+      No student found. Add the student now! <br />
+      <a
+        href="/student/create"
+        style="margin-left: 100px; display: inline-block"
+        >+ Add Student</a
+      >
+    </p>
+    {% else %}
+    <table id="all-students">
+      <tr>
+        <th>SNo</th>
+        <th>Roll Number</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Actions</th>
+      </tr>
+      {% for i in dic %}
+      <tr>
+        <td>{{i}}</td>
+        <td><a href="/student/{{ i }}">{{dic[i][0]}}</a></td>
+        <td>{{dic[i][1]}}</td>
+        <td>{{dic[i][2]}}</td>
+        <td>
+          <a href="/student/{{ i }}/update" type="button">Update</a>
+          <a href="/student/{{ i }}/delete" type="button">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="/student/create" style="margin-left: 100px; display: inline-block"
+      >+ Add Student</a
+    >
+    {% endif %}
+  </body>
+</html>

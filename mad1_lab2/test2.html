@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Course Data</title>
+  </head>
+  <body>
+    <h1>Course Details</h1>
+    <table border="2">
+      <tbody>
+        <tr>
+          <th>Average Marks</th>
+          <th>Maximum Marks</th>
+        </tr>
+        {% for c in dic | groupby("Course id") %} {% if c.grouper == id %} {%
+        set ns = namespace(total=0, maxa=0) %} {% set count= c.list| length %}
+        {% for item in c.list %} {% if item['Marks']>ns.maxa %} {% set ns.maxa=
+        item['Marks'] %} {% endif %} {% set ns.total = ns.total + item['Marks']
+        %} {% endfor %}
+        <tr>
+          <td>{{ (ns.total/count)| round(1) }}</td>
+          <td>{{ ns.maxa }}</td>
+        </tr>
+        {% endif %} {% endfor %}
+      </tbody>
+    </table>
+    <img src="{{ figa }}" alt="Course Marks Graph" />
+  </body>
+</html>

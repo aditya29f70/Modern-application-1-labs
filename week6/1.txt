@@ -1,0 +1,82 @@
+# working with api, first learn what api is -> application programming interface
+
+# backend(flask controller) <--> frontend (browser view)
+# by use render_template in jinja for one eg we sent data from backend to front
+
+# now question: is browser the only way to interact with an application?
+# like app in the phone which is an embedded application
+# or it is a application that you have installed eg
+# gmaill is installed in your phone but you can see
+# '''' data is consistance ''' means when you see main in laptop through browser
+# and by app in phone --> vvvimp how are two different application
+# one that is having a completely different platform 
+# like android or window etc and there is a application runnion on the browser
+# how are these two application connecting to same backend
+
+# so a application run through the flask in broswer with certain configuration  lly 
+# we have to make certain configurations that are only relevant to the
+# that platform that i am using
+
+# and also how to flask handle other platforms like embbed or standalone plateform
+# like in browser the data only can be retrived through html file
+# but html don't work in your phone those are .apk files and you laptop .exe
+# different extension
+
+
+# so you have one backend(controller) but you have diff plotform or interfaces or frontend to show the data
+# and diff interfaces have diff render methods to view the data
+
+# so solving this pro we have found a generllizing way (means sent the data in generlis form)
+# way to sending our data which every toher application or 
+# every other interface or platform understand and renders it according to its
+# own requirement
+
+# and this generalized form of connection between the
+# backend and frontend is what is done by '''api or resource''
+
+# so what we are saying : at the backend instead of using flask and always
+# rendering in html we render a '''''raw data''' and then whatever
+# i want to connect with whether it is web application
+# or embedded application or mobile application or android application 
+# it will pass the data according to there interface and display it
+
+# till now we only integrating our backend to web application
+# but now we have one server or backend and we have to integrate it with diff interface
+# this is one use case
+# now what other senario is
+
+# let we want to create an application which uses map to show accurate positions (like google map it is alos web appli takes data from stalite and optimise it an showing particular position map)
+# (let web application )
+# what will it be the easier to do same research what google did or 
+# take same data what google is providing, it is way easier to take data from google
+# bz it is scalable but problem it how we get this data
+
+# so for that we can ask google to give me a raw data and 
+# i will integrate those in our web application and get the same map
+
+# now what we are trying to do ; connect two differnet application with help of this raw data
+#  i am taking a service that the google maps provide in the form of raw data and using it to our own application
+
+# basically what this application does => borrowing the funcationality from google map
+# so borrowing and lending functionality is also what is called as '''API''''
+
+
+# and that raw that is called as ''''json'''
+# very similar format to a dictionary a like py dic or js obj(more closer)
+# that why full form also --> javascript object notation
+# and the way objects are written is called json , 
+# why we are taking our data in json --> very easier to analze and
+# mold that data into whatever interface you want
+
+# now seeing first use case , expending raw data to other interface
+
+# db --> constroller(do some business analysis and made some changes with data) ---> raw data (json) with that any application can work
+
+# so how to actully use this data (retriving part) will be study later first learn to sent that raw data
+# or gonna see how raw data made and woking from server to client
+
+
+# now go to code for that will be using same db
+# ''make sure you have ''''flask-restful'''''
+
+

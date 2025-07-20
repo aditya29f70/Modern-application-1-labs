@@ -1,0 +1,1 @@
+out= temp.substitute(today='Moday') # keyError: 'tomorrow'

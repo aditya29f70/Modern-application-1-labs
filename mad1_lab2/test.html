@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Student Data</title>
+  </head>
+  <body>
+    <h1>Student Details</h1>
+    <table border="2">
+      <tbody>
+        <tr>
+          <th>Student id</th>
+          <th>Course id</th>
+          <th>Marks</th>
+        </tr>
+        {% for s in dic | groupby("Student id") %} {% if s.grouper == id %} {%
+        set ns = namespace(total=0) %} {% for item in s.list %}
+        <tr>
+          <td>{{ item['Student id'] }}</td>
+          <td>{{ item['Course id'] }}</td>
+          <td>{{ item['Marks'] }}</td>
+        </tr>
+        {% set ns.total = ns.total + item['Marks'] %} {% endfor %}
+        <tr>
+          <td colspan="2">Total Marks</td>
+          <td>{{ ns.total }}</td>
+        </tr>
+        {% endif %} {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

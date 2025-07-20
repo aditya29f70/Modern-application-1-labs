@@ -1,0 +1,107 @@
+
+from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Nullable 
+
+app= Flask(__name__) # here we have made a flask obj
+
+app.config["SQLALCHEMY_DATABASE_URI"]= 'sqlite:///one_to_many.sqlite3'
+
+
+db= SQLAlchemy(app) # and give that app info by giving that app as argument for only the connection
+# so db creatiion done by this
+
+
+app.app_context().push()
+
+
+# child table
+# so in the child table i have to provide foreign key so how i can provide it by
+# db.ForeignKey(<table_name>.<attribute_name>), note When you define a table by python it will gonna by class so you give the capital letter
+# but real table name gonna small
+class User(db.Model):
+  id= db.Column(db.Integer, primary_key=True)
+  username=  db.Column(db.String(20) , nullable=False, unique=True)
+  password=  db.Column(db.String() , nullable=False)
+  role_id= db.Column(db.Integer, db.ForeignKey('role.id'))
+
+# parent table
+class Role(db.Model):
+  id= db.Column(db.Integer, primary_key=True)
+  role_name= db.Column(db.String(20), nullable=False, unique=True)
+  users= db.relationship('User', backref='role')
+# we will be desaling with two types of relation that is 
+# 1. one to many
+# 2. many to many
+# and also try to see how to crate those useing flask_sql_alchemy
+
+
+# now all the tables in the db are independent to each other you can do crud independent on them
+# models for one-to-many relationship
+
+# so Let Role-->(Parent); User-->(child)
+# means ; one role can be given to multiple users but one user cann't have multiple roles
+
+# so how are we relating them --> in case of one to many relationship whichever is child
+# you will have to mention while creating a recoord in the child table you will have to mention who will have 
+# parent which is intuitive bz parent can exist independent , but children must have a parent
+# and this menstioning part will be done by primary keys or parent
+# so for that you have to another attri in the 'user' table which is role_id 'which is a foreign key of Role table's id
+
+# so can say that ; parent can exist independently, but child cann't exist indepen
+
+# so after mention that role_id in the child table (user) is a foreign key now you don't need to 
+# give any other this if you don't want to add any others things which are not in there foreign key
+
+
+## now create the objs and see it works or not
+# so for getting role_id of a user you can easly get and by using it in the 
+#Role table you will that that role_name so, going user ---> role is easly 
+# but finding any info from role --- user is difficult like what are the users
+# have a that particular rule etc
+# so for that we can define a relation in the Role table which will not
+# a column basically it define that relation and give the ans
+# db.Relationship('User',backref='role' ) # within this method we have to give to two parameter
+# 1. name of the model with which you want to create relationship
+# 2. backref= 'role' ==> why we have given 'role'?
+
+# this helps us to solve these these two things
+# 1. to shorten the way you are quering a role obj from user obj
+# 2. to get the list of all the users belonging to a particular role
+
+# now we don't need to recreate the db; bz first know when do we create
+# a db when do i delete the db and do db.create_all() all once again if
+# by any chance i am changing the schema, when does a schema change when i
+# change the type of any attribute when i add a new col , remove a new
+# col , but it is not adding a new cols bz it is not start from db.Column
+# it is not adding physical column --> so only need to exit from the shell 
+# and reopen
+
+# and after 'from app import *' you can direct get the models
+# now tring to retrive '''''list'''' of users have a particular role_id
+# just use ' role.users' will give you 'list of objs(user)' which have that role id
+# so it just internally using tha foreign key and giving me all the list of users which 
+# have this role_id, 
+# so finally you get list of users which have role_id=3 bz role is row of Role which has
+# id=3
+
+
+# when i do user.role it's give <Role 3> why , so there is also two thing 
+# 1. i get obj directly so i can also get the attribute of that obj
+# 2. we did't define that 'role' in user table so what is that --> so this role
+# is coming from that Relationship 'role' , so this back ref called back referencing
+# means: when you want to get the users of a role do role.users but you want to get
+# the other way around user from the role (user.role) --> it has establish two dir
+# relation you can find user to direct there role obj
+# and from a role to list of all the users obj that have this role 
+
+# so this backref property what ever you have mention (backref= 'here') can be used
+# as *****an new attribute of user table******* to access the role object
+
+# by user.role_id we didn't get direct that role obj for getting this i have to some
+# more work or explicily retrive the obj
+
+#note
+# if you add db.Column (new col) in the child table  then you have to add that db.Relationship (invisible col)
+# in the parent table, that is  advise
+
